@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Loja</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card-total { background-color: #f8f9fa; border-left: 4px solid #198754; }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Painel de Vendas</h2>
+        <a href="/logout" class="btn btn-outline-danger btn-sm">Sair</a>
+    </div>
+    <hr>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card card-total shadow">
+                <div class="card-body">
+                    <h5>Total de Pedidos</h5>
+                    <h2>{{ total_vendas }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4>📦 Produtos</h4>
+    <form method="POST" action="/produtos/new" class="row g-2 mb-3">
+        <div class="col-md-4"><input name="nome" class="form-control" placeholder="Nome do Produto" required></div>
+        <div class="col-md-2"><input name="preco" class="form-control" placeholder="Preço" type="number" step="0.01" required></div>
+        <div class="col-md-4"><input name="link" class="form-control" placeholder="Link de entrega" required></div>
+        <div class="col-md-2"><button class="btn btn-success w-100">Adicionar</button></div>
+    </form>
+    <table class="table table-striped table-hover table-sm">
+        <tr><th>ID</th><th>Nome</th><th>Preço</th><th>Link</th><th>Ações</th></tr>
+        {% for p in produtos %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.nome }}</td>
+            <td>R$ {{ p.preco }}</td>
+            <td><a href="{{ p.link_entrega }}" target="_blank">Ver</a></td>
+            <td><a href="/produtos/delete/{{ p.id }}" class="btn btn-sm btn-danger">Excluir</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h4 class="mt-5">🧾 Pedidos Recentes</h4>
+    <table class="table table-bordered table-sm">
+        <tr><th>ID</th><th>Produto</th><th>Status</th><th>Comprador</th><th>Data</th></tr>
+        {% for p in pedidos %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.produto }}</td>
+            <td><span class="badge bg-success">{{ p.status }}</span></td>
+            <td>{{ p.comprador }}</td>
+            <td>{{ p.data }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
